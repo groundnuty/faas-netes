@@ -447,6 +447,9 @@ yaml) |
 | `exposeServices` | Expose `NodePorts/LoadBalancer`  | `true` |
 | `functionNamespace` | Functions namespace, preferred `openfaas-fn` | `openfaas-fn` |
 | `gatewayExternal.annotations` | Annotation for getaway-external service | `{}` |
+| `generateBasicAuth` | Generate admin password for basic authentication | `false` |
+| `basicAuthPassword` | Set basic password manually instead of generating it | `` |
+| `rbac` | Enable RBAC | `true` |
 | `httpProbe` | Setting to true will use HTTP for readiness and liveness probe on the OpenFaaS system Pods (compatible with Istio >= 1.1.5) | `true` |
 | `ingress.enabled` | Create ingress resources | `false` |
 | `istio.mtls` | Create Istio policies and destination rules to enforce mTLS for OpenFaaS components and functions | `false` |
