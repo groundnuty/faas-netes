@@ -8,25 +8,27 @@ metadata:
     component: queue-worker
     heritage: {{ .Release.Service }}
     release: {{ .Release.Name }}
-  name: queue-worker
+  name: {{ template "openfaas.name" . }}-queue-worker
   namespace: {{ .Release.Namespace | quote }}
 spec:
   replicas: {{ .Values.queueWorker.replicas }}
   selector:
     matchLabels:
       app: queue-worker
+      name: {{ template "openfaas.name" . }}
   template:
     metadata:
       annotations:
         prometheus.io/scrape: "false"
       labels:
         app: queue-worker
+        name: {{ template "openfaas.name" . }}
     spec:
       volumes:
       {{- if .Values.basic_auth }}
       - name: auth
         secret:
-          secretName: basic-auth
+          secretName: {{ template "openfaas.name" . }}-basic-auth
       {{- end }}
 
       {{- if .Values.openfaasPro }}
@@ -59,14 +61,14 @@ spec:
           value: "{{ .Values.nats.external.clusterName }}"
         {{- else }}
         - name: faas_nats_address
-          value: "nats.{{ .Release.Namespace }}.svc.{{ .Values.kubernetesDNSDomain }}"
+          value: "{{ template "openfaas.name" . }}-nats.{{ .Release.Namespace }}.svc.{{ .Values.kubernetesDNSDomain }}"
         {{- end}}
         - name: faas_nats_channel
           value: "{{ .Values.nats.channel }}"
         - name: faas_nats_queue_group
           value: "{{ .Values.queueWorker.queueGroup }}"
         - name: faas_gateway_address
-          value: "gateway.{{ .Release.Namespace }}.svc.{{ .Values.kubernetesDNSDomain }}"
+          value: "{{ template "openfaas.name" . }}-gateway.{{ .Release.Namespace }}.svc.{{ .Values.kubernetesDNSDomain }}"
         {{- if .Values.functionNamespace }}
         - name: faas_function_suffix
           value: ".{{ .Values.functionNamespace }}.svc.{{ .Values.kubernetesDNSDomain }}"

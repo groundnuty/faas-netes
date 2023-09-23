@@ -10,17 +10,19 @@ metadata:
     component: prometheus
     heritage: {{ .Release.Service }}
     release: {{ .Release.Name }}
-  name: prometheus
+  name: {{ template "openfaas.name" . }}-prometheus
   namespace: {{ .Release.Namespace | quote }}
 spec:
   replicas: 1
   selector:
     matchLabels:
       app: prometheus
+      name: {{ template "openfaas.name" . }}
   template:
     metadata:
       labels:
         app: prometheus
+        name: {{ template "openfaas.name" . }}
       annotations:
         sidecar.istio.io/inject: "true"
         checksum/prometheus-config: {{ include (print $.Template.BasePath "/prometheus-cfg.yaml") . | sha256sum | quote }}
@@ -28,7 +30,7 @@ spec:
           {{- toYaml .Values.prometheus.annotations | nindent 8 }}
         {{- end }}
     spec:
-      serviceAccountName: {{ .Release.Name }}-prometheus
+      serviceAccountName: {{ template "openfaas.name" . }}-prometheus
       containers:
       - name: prometheus
         resources:
@@ -92,7 +94,7 @@ spec:
       volumes:
         - name: prometheus-config
           configMap:
-            name: prometheus-config
+            name: {{ template "openfaas.name" . }}-prometheus-config
             items:
               - key: prometheus.yml
                 path: prometheus.yml

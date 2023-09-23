@@ -10,7 +10,7 @@ metadata:
     component: prometheus
     heritage: {{ .Release.Service }}
     release: {{ .Release.Name }}
-  name: prometheus
+  name: {{ template "openfaas.name" . }}-prometheus
   namespace: {{ .Release.Namespace | quote }}
 spec:
   type: ClusterIP
@@ -19,4 +19,5 @@ spec:
       protocol: TCP
   selector:
     app: prometheus
+    name: {{ template "openfaas.name" . }}
 {{- end }}

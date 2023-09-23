@@ -3,7 +3,7 @@
 apiVersion: v1
 kind: ServiceAccount
 metadata:
-  name: ingress-operator
+  name: {{ template "openfaas.name" . }}-ingress-operator
   namespace: {{ .Release.Namespace | quote }}
   labels:
     app: {{ template "openfaas.name" . }}
@@ -17,7 +17,7 @@ metadata:
 apiVersion: rbac.authorization.k8s.io/v1
 kind: Role
 metadata:
-  name: ingress-operator-rw
+  name: {{ template "openfaas.name" . }}-ingress-operator-rw
   namespace: {{ .Release.Namespace | quote }}
   labels:
     app: {{ template "openfaas.name" . }}
@@ -45,7 +45,7 @@ rules:
 apiVersion: rbac.authorization.k8s.io/v1
 kind: RoleBinding
 metadata:
-  name: ingress-operator-rw
+  name: {{ template "openfaas.name" . }}-ingress-operator-rw
   namespace: {{ .Release.Namespace | quote }}
   labels:
     app: {{ template "openfaas.name" . }}
@@ -56,10 +56,10 @@ metadata:
 roleRef:
   apiGroup: rbac.authorization.k8s.io
   kind: Role
-  name: ingress-operator-rw
+  name: {{ template "openfaas.name" . }}-ingress-operator-rw
 subjects:
 - kind: ServiceAccount
-  name: ingress-operator
+  name: {{ template "openfaas.name" . }}-ingress-operator
   namespace: {{ .Release.Namespace | quote }}
 {{- end }}
 {{- end }}

@@ -11,7 +11,7 @@ metadata:
     component: alertmanager
     heritage: {{ .Release.Service }}
     release: {{ .Release.Name }}
-  name: alertmanager
+  name: {{ template "openfaas.name" . }}-alertmanager
   namespace: {{ .Release.Namespace | quote }}
 spec:
   type: ClusterIP
@@ -20,5 +20,6 @@ spec:
       protocol: TCP
   selector:
     app: alertmanager
+    name: {{ template "openfaas.name" . }}
 {{- end }}
 {{- end }}

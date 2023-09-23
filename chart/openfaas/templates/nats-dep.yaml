@@ -8,13 +8,14 @@ metadata:
     component: nats
     heritage: {{ .Release.Service }}
     release: {{ .Release.Name }}
-  name: nats
+  name: {{ template "openfaas.name" . }}-nats
   namespace: {{ .Release.Namespace | quote }}
 spec:
   replicas: 1
   selector:
     matchLabels:
       app: nats
+      name: {{ template "openfaas.name" . }}
   template:
     metadata:
       annotations:
@@ -24,6 +25,7 @@ spec:
         {{- end }}
       labels:
         app: nats
+        name: {{ template "openfaas.name" . }}
     spec:
       containers:
       - name:  nats

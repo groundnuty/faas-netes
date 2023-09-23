@@ -7,7 +7,7 @@ metadata:
     component: gateway
     heritage: {{ .Release.Service }}
     release: {{ .Release.Name }}
-  name: gateway
+  name: {{ template "openfaas.name" . }}-gateway
   namespace: {{ .Release.Namespace | quote }}
 spec:
   type: ClusterIP
@@ -18,3 +18,4 @@ spec:
       protocol: TCP
   selector:
     app: gateway
+    name: {{ template "openfaas.name" . }}

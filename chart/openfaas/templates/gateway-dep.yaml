@@ -15,13 +15,14 @@ metadata:
     component: gateway
     heritage: {{ .Release.Service }}
     release: {{ .Release.Name }}
-  name: gateway
+  name: {{ template "openfaas.name" . }}-gateway
   namespace: {{ .Release.Namespace | quote }}
 spec:
   replicas: {{ .Values.gateway.replicas }}
   selector:
     matchLabels:
       app: gateway
+      name: {{ template "openfaas.name" . }}
   template:
     metadata:
       annotations:
@@ -29,11 +30,12 @@ spec:
         prometheus.io/port: "8082"
       labels:
         app: gateway
+        name: {{ template "openfaas.name" . }}
     spec:
       {{- if .Values.operator.create }}
-      serviceAccountName: {{ .Release.Name }}-operator
+      serviceAccountName: {{ template "openfaas.name" . }}-operator
       {{- else }}
-      serviceAccountName: {{ .Release.Name }}-controller
+      serviceAccountName: {{ template "openfaas.name" . }}-controller
       {{- end }}
       volumes:
       {{- if .Values.iam.enabled }}
@@ -53,7 +55,7 @@ spec:
       {{- if .Values.basic_auth }}
       - name: auth
         secret:
-          secretName: basic-auth
+          secretName: {{ template "openfaas.name" . }}-basic-auth
       {{- end }}
       {{- if .Values.openfaasPro }}
       - name: license
@@ -160,7 +162,7 @@ spec:
         {{- else }}
         {{- if .Values.async }}
         - name: faas_nats_address
-          value: "nats.{{ .Release.Namespace }}.svc.{{ .Values.kubernetesDNSDomain }}"
+          value: "{{ template "openfaas.name" . }}-nats.{{ .Release.Namespace }}.svc.{{ .Values.kubernetesDNSDomain }}"
         - name: faas_nats_port
           value: "4222"
         - name: faas_nats_channel
@@ -182,7 +184,7 @@ spec:
           value: "{{.Values.gateway.authProxyUrl}}"
         {{- else if .Values.iam.enabled }}
         - name: auth_proxy_url
-          value: "http://oidc-plugin.{{ .Release.Namespace }}:8080"
+          value: "http://{{ template "openfaas.name" . }}-oidc-plugin.{{ .Release.Namespace }}:8080
         {{- end }}
         - name: scale_from_zero
           value: "{{ .Values.gateway.scaleFromZero }}"

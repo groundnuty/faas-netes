@@ -10,19 +10,21 @@ metadata:
     component: oidc-plugin
     heritage: {{ .Release.Service }}
     release: {{ .Release.Name }}
-  name: oidc-plugin
+  name: {{ template "openfaas.name" . }}-oidc-plugin
   namespace: {{ .Release.Namespace | quote }}
 spec:
   replicas: {{ .Values.oidcAuthPlugin.replicas }}
   selector:
     matchLabels:
       app: oidc-plugin
+      name: {{ template "openfaas.name" . }}
   template:
     metadata:
       annotations:
         prometheus.io/scrape: "false"
       labels:
         app: oidc-plugin
+        name: {{ template "openfaas.name" . }}
     spec:
       serviceAccountName: oidc-plugin
       volumes:
@@ -34,7 +36,7 @@ spec:
       {{- if .Values.basic_auth }}
       - name: auth
         secret:
-          secretName: basic-auth
+          secretName: {{ template "openfaas.name" . }}-basic-auth
       {{- end }}
       - name: license
         secret:

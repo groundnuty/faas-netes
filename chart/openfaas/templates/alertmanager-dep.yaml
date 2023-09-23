@@ -11,17 +11,19 @@ metadata:
     component: alertmanager
     heritage: {{ .Release.Service }}
     release: {{ .Release.Name }}
-  name: alertmanager
+  name: {{ template "openfaas.name" . }}-alertmanager
   namespace: {{ .Release.Namespace | quote }}
 spec:
   replicas: 1
   selector:
     matchLabels:
       app: alertmanager
+      name: {{ template "openfaas.name" . }}
   template:
     metadata:
       labels:
         app: alertmanager
+        name: {{ template "openfaas.name" . }}
       annotations:
         sidecar.istio.io/inject: "true"
         checksum/alertmanager-config: {{ include (print $.Template.BasePath "/alertmanager-cfg.yaml") . | sha256sum | quote  }}
@@ -84,7 +86,7 @@ spec:
       volumes:
         - name: alertmanager-config
           configMap:
-            name: alertmanager-config
+            name: {{ template "openfaas.name" . }}-alertmanager-config
             items:
               - key: alertmanager.yml
                 path: alertmanager.yml
@@ -92,7 +94,7 @@ spec:
         {{- if .Values.basic_auth }}
         - name: auth
           secret:
-            secretName: basic-auth
+            secretName: {{ template "openfaas.name" . }}-basic-auth
         {{- end }}
     {{- with .Values.nodeSelector }}
       nodeSelector:

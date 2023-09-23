@@ -10,7 +10,7 @@ metadata:
     component: faas-controller
     heritage: {{ .Release.Service }}
     release: {{ .Release.Name }}
-  name: {{ .Release.Name }}-controller
+  name: {{ template "openfaas.name" . }}-controller
   namespace: {{ .Release.Namespace | quote }}
 {{- if .Values.rbac }}
 {{- if .Values.clusterRole }}
@@ -24,7 +24,7 @@ metadata:
     component: faas-controller
     heritage: {{ .Release.Service }}
     release: {{ .Release.Name }}
-  name: {{ .Release.Name }}-controller
+  name: {{ template "openfaas.name" . }}-controller
   namespace: {{ $functionNs | quote }}
 rules:
   - apiGroups:
@@ -108,15 +108,15 @@ metadata:
     component: faas-controller
     heritage: {{ .Release.Service }}
     release: {{ .Release.Name }}
-  name: {{ .Release.Name }}-controller
+  name: {{ template "openfaas.name" . }}-controller
   namespace: {{ $functionNs | quote }}
 roleRef:
   apiGroup: rbac.authorization.k8s.io
   kind: ClusterRole
-  name: {{ .Release.Name }}-controller
+  name: {{ template "openfaas.name" . }}-controller
 subjects:
   - kind: ServiceAccount
-    name: {{ .Release.Name }}-controller
+    name: {{ template "openfaas.name" . }}-controller
     namespace: {{ .Release.Namespace | quote }}
 {{- else }}
 ---
@@ -129,7 +129,7 @@ metadata:
     component: faas-controller
     heritage: {{ .Release.Service }}
     release: {{ .Release.Name }}
-  name: {{ .Release.Name }}-controller
+  name: {{ template "openfaas.name" . }}-controller
   namespace: {{ $functionNs | quote }}
 rules:
   - apiGroups:
@@ -188,15 +188,15 @@ metadata:
     component: faas-controller
     heritage: {{ .Release.Service }}
     release: {{ .Release.Name }}
-  name: {{ .Release.Name }}-controller
+  name: {{ template "openfaas.name" . }}-controller
   namespace: {{ $functionNs | quote }}
 roleRef:
   apiGroup: rbac.authorization.k8s.io
   kind: Role
-  name: {{ .Release.Name }}-controller
+  name: {{ template "openfaas.name" . }}-controller
 subjects:
   - kind: ServiceAccount
-    name: {{ .Release.Name }}-controller
+    name: {{ template "openfaas.name" . }}-controller
     namespace: {{ .Release.Namespace | quote }}
 ---
 apiVersion: rbac.authorization.k8s.io/v1
@@ -208,7 +208,7 @@ metadata:
     component: faas-controller
     heritage: {{ .Release.Service }}
     release: {{ .Release.Name }}
-  name: {{ .Release.Name }}-profiles
+  name: {{ template "openfaas.name" . }}-profiles
   namespace: {{ .Release.Namespace | quote }}
 rules:
   - apiGroups:
@@ -230,15 +230,15 @@ metadata:
     component: faas-controller
     heritage: {{ .Release.Service }}
     release: {{ .Release.Name }}
-  name: {{ .Release.Name }}-profiles
+  name: {{ template "openfaas.name" . }}-profiles
   namespace: {{ .Release.Namespace | quote }}
 roleRef:
   apiGroup: rbac.authorization.k8s.io
   kind: Role
-  name: {{ .Release.Name }}-profiles
+  name: {{ template "openfaas.name" . }}-profiles
 subjects:
   - kind: ServiceAccount
-    name: {{ .Release.Name }}-controller
+    name: {{ template "openfaas.name" . }}-controller
     namespace: {{ .Release.Namespace | quote }}
 {{- end }}
 {{- end }}

@@ -23,7 +23,7 @@ spec:
       labels:
         app: ingress-operator
     spec:
-      serviceAccountName: ingress-operator
+      serviceAccountName: {{ template "openfaas.name" . }}-ingress-operator
       containers:
       - name: operator
         resources:

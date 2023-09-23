@@ -11,7 +11,7 @@ metadata:
     component: oidc-plugin
     heritage: {{ .Release.Service }}
     release: {{ .Release.Name }}
-  name: oidc-plugin
+  name: {{ template "openfaas.name" . }}-oidc-plugin
   namespace: {{ .Release.Namespace | quote }}
 spec:
   type: ClusterIP
@@ -22,5 +22,6 @@ spec:
       name: http
   selector:
     app: oidc-plugin
+    name: {{ template "openfaas.name" . }}
 
 {{- end }}

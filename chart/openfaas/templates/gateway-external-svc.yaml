@@ -12,7 +12,7 @@ metadata:
 {{- if .Values.gatewayExternal.annotations }}
   annotations: {{ toYaml .Values.gatewayExternal.annotations | nindent 4 }}
 {{- end }}
-  name: gateway-external
+  name: {{ template "openfaas.name" . }}-gateway-external
   namespace: {{ .Release.Namespace | quote }}
 spec:
   type: {{ .Values.serviceType }}
@@ -26,4 +26,5 @@ spec:
       {{- end }}
   selector:
     app: gateway
+    name: {{ template "openfaas.name" . }}
   {{- end }}

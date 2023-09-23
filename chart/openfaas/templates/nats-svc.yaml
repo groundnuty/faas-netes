@@ -9,7 +9,7 @@ metadata:
     component: nats
     heritage: {{ .Release.Service }}
     release: {{ .Release.Name }}
-  name: nats
+  name: {{ template "openfaas.name" . }}-nats
   namespace: {{ .Release.Namespace | quote }}
 spec:
   type: ClusterIP
@@ -29,4 +29,5 @@ spec:
     {{- end }}
   selector:
     app: nats
+    name: {{ template "openfaas.name" . }}
 {{- end }}

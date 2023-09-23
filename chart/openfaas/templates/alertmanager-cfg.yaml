@@ -11,7 +11,7 @@ metadata:
     component: alertmanager-config
     heritage: {{ .Release.Service }}
     release: {{ .Release.Name }}
-  name: alertmanager-config
+  name: {{ template "openfaas.name" . }}-alertmanager-config
   namespace: {{ .Release.Namespace | quote }}
 data:
   alertmanager.yml: |
@@ -37,7 +37,7 @@ data:
     receivers:
     - name: 'scale-up'
       webhook_configs:
-        - url: http://gateway.{{ .Release.Namespace }}:8080/system/alert
+        - url: http://{{ template "openfaas.name" . }}-gateway.{{ .Release.Namespace }}:8080/system/alert
           send_resolved: true
           {{- if .Values.basic_auth }}
           http_config:
