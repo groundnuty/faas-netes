@@ -39,6 +39,9 @@ spec:
         command:
           - "prometheus"
           - "--config.file=/etc/prometheus/prometheus.yml"
+        {{- range .Values.prometheus.extraFlags }}
+          - {{ . | quote }}
+        {{- end }}
         imagePullPolicy: {{ .Values.openfaasImagePullPolicy }}
         livenessProbe:
           {{- if .Values.httpProbe }}

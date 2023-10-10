@@ -247,6 +247,8 @@ prometheus:
     requests:
       memory: "512Mi"
   annotations: {}
+  extraFlags:
+    - --storage.tsdb.retention.time=1d
 
 alertmanager:
   image: prom/alertmanager:v0.26.0
